@@ -29,9 +29,16 @@ npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router
 # Create Config Directory
 mkdir -p ~/.claude-code-router
 
-echo "✅ ALL DONE!"
+echo -e "\n\033[1;32m✅ ALL DONE!\033[0m"
 echo "-------------------------------------------------------"
-echo "1. Restart your terminal (or run: source ~/.bashrc)"
-echo "2. Create your config file: nano ~/.claude-code-router/config.json"
-echo "3. Run 'ccr code' to start!"
+echo -e "\033[1;33m⚠️  ACTION REQUIRED TO RELOAD YOUR PATH:\033[0m"
+echo ""
+echo "   Run this command now:"
+echo -e "   \033[1;36msource ~/.bashrc\033[0m"
+echo ""
+echo "   (Or simply close and reopen your WSL terminal)"
+echo "-------------------------------------------------------"
+echo "Next Steps:"
+echo "1. Create your config: nano ~/.claude-code-router/config.json"
+echo "2. Run 'ccr code' to start!"
 echo "-------------------------------------------------------"
