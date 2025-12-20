@@ -1,6 +1,6 @@
-# 🚀 Claude Code Router: Master Setup Guide (WSL + Gemini + OpenRouter)
+# 🚀 Claude Code Router: Master Setup Guide (WSL + Gemini)
 
-This repository is the official companion for our YouTube tutorial on setting up **Claude Code** inside Windows using **WSL2**. We use the **Claude Code Router (CCR)** to unlock models like **Google Gemini** and **DeepSeek** directly within the Anthropic CLI.
+This repository is the official companion for our YouTube tutorial on setting up **Claude Code** inside Windows using **WSL2**. We use the **Claude Code Router (CCR)** to unlock **Google Gemini** models directly within the Anthropic CLI.
 
 ---
 
@@ -41,6 +41,7 @@ When you see something like:
 
 ```bash
 hammad@PC:/mnt/c/WINDOWS/system32$
+
 ```
 
 Keep this terminal open and continue.
@@ -49,16 +50,37 @@ Keep this terminal open and continue.
 
 ## ⚡ Method 1: Automated "Speedrun" Script
 
+### 1. Run the Installer
 Inside your **WSL / Ubuntu** terminal, run:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/devhammad0/claude-code-router-setup/main/scripts/install.sh | bash
+
 ```
 
 > After the script finishes:
 
 ```bash
 source ~/.bashrc
+```
+
+### 2. Set Your Google API Key
+Replace `YOUR_KEY_HERE` with your key from [Google AI Studio](https://aistudio.google.com/):
+
+```bash
+echo 'export GOOGLE_API_KEY="YOUR_KEY_HERE"' >> ~/.bashrc
+```
+
+### 3. Reload your Environment
+
+```bash
+source ~/.bashrc
+```
+
+### 4. Laucnh Claude Code Router
+
+```bash
+ccr code
 ```
 
 ---
@@ -70,6 +92,7 @@ source ~/.bashrc
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl git build-essential
+
 ```
 
 ### 2. Install Node.js (via NVM)
@@ -78,12 +101,14 @@ sudo apt install -y curl git build-essential
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 source ~/.bashrc
 nvm install --lts
+
 ```
 
 ### 3. Install Claude Code & CCR Router
 
 ```bash
 npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router
+
 ```
 
 ---
@@ -96,107 +121,78 @@ Run:
 
 ```bash
 echo $SHELL
+
 ```
 
 * If output contains `/bash` → use `~/.bashrc`
 * If output contains `/zsh` → use `~/.zshrc`
 
-You will use this file in the next steps.
-
 ---
 
-### Step 2: Create Config File
+### Step 2: Create Config File (Google Gemini)
 
 ```bash
-mkdir -p ~/.claude-code-router
-nano ~/.claude-code-router/config.json
+mkdir -p ~/.claude-code-router ~/.claude
+
 ```
 
-Paste **one** of the following templates.
-
----
-
-### Option A: Google Gemini
+Run the following command to create your configuration:
 
 ```json
+cat > ~/.claude-code-router/config.json << 'EOF'
 {
   "LOG": true,
   "LOG_LEVEL": "info",
   "HOST": "127.0.0.1",
   "PORT": 3456,
+  "APIKEY": "your_secure_password_here",
   "API_TIMEOUT_MS": 600000,
   "Providers": [
     {
       "name": "gemini",
-      "api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
+      "api_base_url": "[https://generativelanguage.googleapis.com/v1beta/models/](https://generativelanguage.googleapis.com/v1beta/models/)",
       "api_key": "$GOOGLE_API_KEY",
       "models": [
         "gemini-3-flash-preview",
         "gemini-3-pro-preview",
-        "gemini-flash-lite-latest",
-        "gemini-flash-latest"
+        "gemini-2.0-flash",
+        "gemini-1.5-pro"
       ],
       "transformer": { "use": ["gemini"] }
     }
   ],
   "Router": {
     "default": "gemini,gemini-3-flash-preview",
-    "background": "gemini,gemini-flash-lite-latest",
-    "think": "gemini,gemini-flash-lite-latest",
-    "longContext": "gemini,gemini-flash-lite-latest",
+    "background": "gemini,gemini-3-flash-preview",
+    "think": "gemini,gemini-3-pro-preview",
+    "longContext": "gemini,gemini-3-pro-preview",
     "longContextThreshold": 60000
   }
 }
+EOF
+
 ```
 
 ---
 
-### Option B: OpenRouter
+### Step 3: Set API Key
 
-```json
-{
-  "LOG": true,
-  "PORT": 3456,
-  "Providers": [
-    {
-      "name": "openrouter",
-      "api_base_url": "https://openrouter.ai/api/v1/chat/completions",
-      "api_key": "$OPENROUTER_API_KEY",
-      "models": [
-        "google/gemini-3-flash-preview",
-        "openai/gpt-oss-120b",
-        "deepseek/deepseek-v3.2"
-      ],
-      "transformer": { "use": ["openrouter"] }
-    }
-  ],
-  "Router": {
-    "default": "openrouter,google/gemini-3-flash-preview",
-    "think": "openrouter,deepseek/deepseek-v3.2"
-  }
-}
-```
-
----
-
-### Step 3: Set API Keys
-
-Use the file you identified earlier.
+Use the shell configuration file you identified in Step 1. Replace `YOUR_KEY_HERE` with your actual Google AI Studio API key.
 
 **If using bash:**
 
 ```bash
 echo 'export GOOGLE_API_KEY="YOUR_KEY_HERE"' >> ~/.bashrc
-echo 'export OPENROUTER_API_KEY="YOUR_KEY_HERE"' >> ~/.bashrc
 source ~/.bashrc
+
 ```
 
 **If using zsh:**
 
 ```bash
 echo 'export GOOGLE_API_KEY="YOUR_KEY_HERE"' >> ~/.zshrc
-echo 'export OPENROUTER_API_KEY="YOUR_KEY_HERE"' >> ~/.zshrc
 source ~/.zshrc
+
 ```
 
 ---
@@ -205,6 +201,7 @@ source ~/.zshrc
 
 ```bash
 ccr code
+
 ```
 
 ---
@@ -212,7 +209,7 @@ ccr code
 ## 💡 Essential Commands
 
 * `/status` → Check connection
-* `/model provider,model_name` → Switch models
+* `/model provider,model_name` → Switch models (e.g., `/model gemini,gemini-3-pro-preview`)
 * `ccr ui` → Dashboard at `http://localhost:3456`
 
 ---
