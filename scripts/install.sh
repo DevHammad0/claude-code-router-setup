@@ -47,17 +47,17 @@ cat > ~/.claude-code-router/config.json << 'EOF'
       "models": [
         "gemini-3-flash-preview",
         "gemini-3-pro-preview",
-        "gemini-2.0-flash",
-        "gemini-1.5-pro"
+        "gemini-2.5-flash-lite",
+        "gemini-2.0-flash"
       ],
       "transformer": { "use": ["gemini"] }
     }
   ],
   "Router": {
-    "default": "gemini,gemini-3-flash-preview",
-    "background": "gemini,gemini-3-flash-preview",
-    "think": "gemini,gemini-3-pro-preview",
-    "longContext": "gemini,gemini-3-pro-preview",
+    "default": "gemini,gemini-2.5-flash-lite",
+    "background": "gemini,gemini-2.5-flash-lite",
+    "think": "gemini,gemini-2.5-flash-lite",
+    "longContext": "gemini,gemini-2.5-flash-lite",
     "longContextThreshold": 60000
   }
 }
@@ -74,6 +74,5 @@ echo "   (Or simply close and reopen your WSL terminal)"
 echo "-------------------------------------------------------"
 echo "Next Steps:"
 echo "1. Set your API Key: echo 'export GOOGLE_API_KEY=\"your_key\"' >> ~/.bashrc"
-echo "2. Restart your terminal or run 'source ~/.bashrc'"
-echo "3. Run 'ccr code' to start!"
+echo "2. Run 'ccr code' to start!"
 echo "-------------------------------------------------------"
