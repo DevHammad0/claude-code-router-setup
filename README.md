@@ -92,7 +92,6 @@ ccr code
 ```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl git build-essential
-
 ```
 
 ### 2. Install Node.js (via NVM)
@@ -101,14 +100,12 @@ sudo apt install -y curl git build-essential
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 source ~/.bashrc
 nvm install --lts
-
 ```
 
 ### 3. Install Claude Code & CCR Router
 
 ```bash
 npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router
-
 ```
 
 ---
@@ -121,7 +118,6 @@ Run:
 
 ```bash
 echo $SHELL
-
 ```
 
 * If output contains `/bash` → use `~/.bashrc`
@@ -133,7 +129,6 @@ echo $SHELL
 
 ```bash
 mkdir -p ~/.claude-code-router ~/.claude
-
 ```
 
 Run the following command to create your configuration:
@@ -170,7 +165,6 @@ cat > ~/.claude-code-router/config.json << 'EOF'
   }
 }
 EOF
-
 ```
 
 ---
@@ -184,7 +178,6 @@ Use the shell configuration file you identified in Step 1. Replace `YOUR_KEY_HER
 ```bash
 echo 'export GOOGLE_API_KEY="YOUR_KEY_HERE"' >> ~/.bashrc
 source ~/.bashrc
-
 ```
 
 **If using zsh:**
@@ -192,7 +185,6 @@ source ~/.bashrc
 ```bash
 echo 'export GOOGLE_API_KEY="YOUR_KEY_HERE"' >> ~/.zshrc
 source ~/.zshrc
-
 ```
 
 ---
@@ -201,18 +193,48 @@ source ~/.zshrc
 
 ```bash
 ccr code
-
 ```
 
 ---
 
 ## 💡 Essential Commands
 
-* `/status` → Check connection
-* `/model provider,model_name` → Switch models (e.g., `/model gemini,gemini-3-pro-preview`)
+* `ccr start` / `ccr stop` / `ccr status` — Manage the background router service.
+* `ccr model` — Quick interactive configuration of your model providers.
 * `ccr ui` → Dashboard at `http://localhost:3456`
-
 ---
+
+
+## ❓ Troubleshooting
+
+### 1. Service Startup Timeout  
+
+If `ccr code` shows a "Timeout" error, the background service might just need a manual kickstart. Run these separately:  
+
+```bash
+ccr start
+ccr code
+```
+
+### 2. Status shows "Not Running"  
+
+This usually means a "ghost" process is already using the port. Run this to clear it:
+
+```bash
+# Find any process on port 3456
+sudo lsof -i :3456
+# Use the PID found to kill it: sudo kill -9 <PID>
+```
+
+### 3. Verification Commands  
+
+Use these commands to verify your setup:
+
+- `ccr status` — Check if the background service is running.
+- `/status` — (Inside Claude) Verify the Base URL is 127.0.0.1:3456.
+
+---  
+
 
 **Maintained by Muhammad Hammad**
 *Agentic AI Architect | Chatbots & Automation Specialist*
