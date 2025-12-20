@@ -1,33 +1,67 @@
 #!/bin/bash
 set -e
 
-echo "🌟 Starting Automated Setup for Claude Code Router..."
+echo "🌟 Starting Automated Setup for Claude Code Router (Gemini 3 Ready)..."
 
-# Update and Install Essentials
+# 1. Update and Install Essentials
+# We do this to ensure your system list is fresh and you have the necessary compilers.
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y curl git build-essential
 
-# Install NVM if not present
+# 2. Install NVM (Node Version Manager) if not present
 if [ ! -d "$HOME/.nvm" ]; then
     echo "📦 Installing NVM..."
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 fi
 
-# Load NVM
+# Load NVM into the current shell session
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-# Install Node LTS
+# 3. Install Node.js LTS
 echo "🟢 Installing Node.js LTS..."
 nvm install --lts
 nvm use --lts
 
-# Install Claude Code & Router
+# 4. Install Claude Code & Router
 echo "🤖 Installing Claude Code and Router..."
 npm install -g @anthropic-ai/claude-code @musistudio/claude-code-router
 
-# Create Config Directory
-mkdir -p ~/.claude-code-router
+# 5. Create Config Directory and Generate Gemini 3 Config
+mkdir -p ~/.claude-code-router ~/.claude
+
+echo "📝 Generating optimized config.json..."
+cat > ~/.claude-code-router/config.json << 'EOF'
+{
+  "LOG": true,
+  "LOG_LEVEL": "info",
+  "HOST": "127.0.0.1",
+  "PORT": 3456,
+  "APIKEY": "your_secure_password_here",
+  "API_TIMEOUT_MS": 600000,
+  "Providers": [
+    {
+      "name": "gemini",
+      "api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
+      "api_key": "$GOOGLE_API_KEY",
+      "models": [
+        "gemini-3-flash-preview",
+        "gemini-3-pro-preview",
+        "gemini-2.0-flash",
+        "gemini-1.5-pro"
+      ],
+      "transformer": { "use": ["gemini"] }
+    }
+  ],
+  "Router": {
+    "default": "gemini,gemini-3-flash-preview",
+    "background": "gemini,gemini-3-flash-preview",
+    "think": "gemini,gemini-3-pro-preview",
+    "longContext": "gemini,gemini-3-pro-preview",
+    "longContextThreshold": 60000
+  }
+}
+EOF
 
 echo -e "\n\033[1;32m✅ ALL DONE!\033[0m"
 echo "-------------------------------------------------------"
@@ -39,6 +73,7 @@ echo ""
 echo "   (Or simply close and reopen your WSL terminal)"
 echo "-------------------------------------------------------"
 echo "Next Steps:"
-echo "1. Create your config: nano ~/.claude-code-router/config.json"
-echo "2. Run 'ccr code' to start!"
+echo "1. Set your API Key: echo 'export GOOGLE_API_KEY=\"your_key\"' >> ~/.bashrc"
+echo "2. Restart your terminal or run 'source ~/.bashrc'"
+echo "3. Run 'ccr code' to start!"
 echo "-------------------------------------------------------"
