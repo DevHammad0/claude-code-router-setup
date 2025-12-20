@@ -65,7 +65,7 @@ source ~/.bashrc
 ```
 
 ### 2. Set Your Google API Key
-Replace `YOUR_KEY_HERE` with your key from [Google AI Studio](https://aistudio.google.com/):
+Replace `YOUR_KEY_HERE` with your key from <a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a>:
 
 ```bash
 echo 'export GOOGLE_API_KEY="YOUR_KEY_HERE"' >> ~/.bashrc
@@ -150,7 +150,7 @@ cat > ~/.claude-code-router/config.json << 'EOF'
   "Providers": [
     {
       "name": "gemini",
-      "api_base_url": "[https://generativelanguage.googleapis.com/v1beta/models/](https://generativelanguage.googleapis.com/v1beta/models/)",
+      "api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
       "api_key": "$GOOGLE_API_KEY",
       "models": [
         "gemini-3-flash-preview",
