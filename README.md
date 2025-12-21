@@ -1,6 +1,10 @@
 # 🚀 Claude Code Router: Master Setup Guide (WSL + Gemini)
 
-This repository is the official companion for our YouTube tutorial on setting up **Claude Code** inside Windows using **WSL2**. We use the **Claude Code Router (CCR)** to unlock **Google Gemini** models directly within the Anthropic CLI.
+[![Watch the Tutorial](https://img.youtube.com/vi/Kerha8oWWug/maxresdefault.jpg)](https://youtu.be/Kerha8oWWug)
+
+> **📺 Watch the Video:** [Click here to watch the full step-by-step tutorial](https://youtu.be/Kerha8oWWug)  
+
+This repository is the official guide for my YouTube tutorial. It helps you set up Claude Code on Windows using WSL2 and powers it with Google Gemini using the Claude Code Router.
 
 ---
 
@@ -259,7 +263,5 @@ Use these commands to verify your setup:
 
 ---  
 
-
-**Maintained by Muhammad Hammad**
-*Agentic AI Architect | Chatbots & Automation Specialist*
+**Maintained by Muhammad Hammad** | [LinkedIn Profile](https://www.linkedin.com/in/devhammad0)
 
