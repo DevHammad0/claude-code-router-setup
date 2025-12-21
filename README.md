@@ -150,22 +150,46 @@ cat > ~/.claude-code-router/config.json << 'EOF'
       "models": [
         "gemini-3-flash-preview",
         "gemini-3-pro-preview",
-        "gemini-2.0-flash",
-        "gemini-1.5-pro"
+        "gemini-2.5-flash-lite",
+        "gemini-2.0-flash"
       ],
       "transformer": { "use": ["gemini"] }
     }
   ],
   "Router": {
-    "default": "gemini,gemini-3-flash-preview",
-    "background": "gemini,gemini-3-flash-preview",
-    "think": "gemini,gemini-3-pro-preview",
-    "longContext": "gemini,gemini-3-pro-preview",
+    "default": "gemini,gemini-2.5-flash-lite",
+    "background": "gemini,gemini-2.5-flash-lite",
+    "think": "gemini,gemini-2.5-flash-lite",
+    "longContext": "gemini,gemini-2.5-flash-lite",
     "longContextThreshold": 60000
   }
 }
 EOF
 ```
+
+---
+
+### 📊 Model Performance & Quota (Free Tier)
+
+Before you run the agent, check the current limits for the models included in the config above. These limits are reset at **Midnight Pacific Time (PT)**.
+
+| Model Name | RPM (Req/Min) | TPM (Tokens/Min) | RPD (Req/Day) | Status/Notes |
+| :--- | :---: | :---: | :---: | :--- |
+| **gemini-2.5-flash-lite** | **30** | 1,000,000 | **1,500** | ✅ **Recommended for Coding** |
+| **gemini-2.0-flash** | 10 | 1,000,000 | 1,000 | Stable legacy option |
+| **gemini-3-flash-preview**| 2 | 100,000 | 100 | ⚠️ Strict preview limits |
+| **gemini-3-pro-preview** | 0 - 2* | 32,000 | 5 - 10 | 🚫 Effectively Paid-Only |
+
+---
+
+> **Free Tier Quota Note:**  
+>
+> * **RPM** (Requests Per Minute) is strictly enforced. If Claude Code fires multiple background file reads, you may hit a brief 429 error.
+> * **Gemini 3 Pro Preview** is currently highly restricted for free users; frequent use in the `think` or `longContext` routes will likely exhaust your daily quota (RPD) in minutes.
+>
+> **TIP:**  
+> ***Why use Flash-Lite?** *Claude Code performs many small background tasks (reading files, checking status). Using a model with less than 10 RPM will cause "Rate Limit" errors almost immediately. Flash-Lite is the only free model that provides a smooth experience for complex coding.*
+
 
 ---
 
